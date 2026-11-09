@@ -1,0 +1,148 @@
+# 体育领域品类树（"运动知识层"）
+#
+# 为什么要单独一个文件：
+#   1. 体育知识是运营资产，不是代码。赛事改期、品类新增、退货率修正都应该改 YAML，
+#      而不是改 Python；
+#   2. 它是三处逻辑的唯一事实来源：商品建档时补默认属性、匹配时算 E 分、内容生成时选模板。
+#
+# 字段说明：
+#   name            中文名（界面展示用）
+#   keywords        用于给商品/热点做运动项目识别的词表
+#   categories      这个运动项目下常见的商品品类（用于 category_map 兜底）
+#   default_weight_kg  该类商品的平均发货重量（缺重量时用它，并在界面标注"估算"）
+#   default_return_rate 该类目的历史退货率（算期望退货损失用）
+#   size_system     尺码/规格体系（内容与客服追问用）
+#   cert_required   是否必须有认证/检测报告才能宣传（护具、能量补剂这类）
+#   risk_note       这个项目特有的合规提醒（生成内容时自动附上）
+
+version: 1
+
+defaults:
+  weight_kg: 1.0
+  return_rate: 0.15
+  size_system: "均码"
+  package_rate: 0.12          # 包装体积占比（体积重估算用）
+
+sports:
+  running:
+    name: 跑步
+    keywords: [跑步, 马拉松, 跑鞋, 碳板, 慢跑, 夜跑, 配速, 半马, 全马, 破三, 越野跑, 跑步机]
+    categories: [跑鞋, 碳板跑鞋, 运动袜, 压缩裤, 能量胶, 盐丸, 运动手表, 腰包]
+    default_weight_kg: 0.9
+    default_return_rate: 0.18
+    size_system: "EU 鞋码"
+    cert_required: false
+    risk_note: "不得承诺成绩提升；不得宣称治疗足底筋膜炎等疾病"
+  badminton:
+    name: 羽毛球
+    keywords: [羽毛球, 球拍, 磅数, 拍线, 手胶, 羽毛球鞋, 羽联, 羽球, 双打, 单打, 劈吊, 杀球]
+    categories: [羽毛球拍, 羽毛球, 手胶, 羽毛球鞋, 拍线, 球包]
+    default_weight_kg: 0.6
+    default_return_rate: 0.12
+    size_system: "拍重规格（3U/4U）+ 磅数"
+    cert_required: false
+    risk_note: "不得宣称球拍能提升成绩；穿线磅数需按实际能力建议"
+  fitness:
+    name: 健身
+    keywords: [健身, 增肌, 减脂, 撸铁, 深蹲, 卧推, 蛋白粉, 哑铃, 健身房, 体脂, 核心, 力量训练]
+    categories: [瑜伽垫, 健腹轮, 哑铃, 弹力带, 蛋白粉, 运动手套, 护腕, 筋膜枪]
+    default_weight_kg: 1.5
+    default_return_rate: 0.15
+    size_system: "均码"
+    cert_required: false
+    risk_note: "减脂增肌类不得承诺具体体重变化；补剂不得宣称疗效"
+  football:
+    name: 足球
+    keywords: [足球, 足球鞋, 钉鞋, 球衣, 护腿板, 中超, 世界杯, 射门, 五人制, 门将, 球场]
+    categories: [足球鞋, 足球, 护腿板, 球袜, 守门员手套]
+    default_weight_kg: 0.7
+    default_return_rate: 0.25
+    size_system: "EU 鞋码（偏窄建议拍大半码）"
+    cert_required: false
+    risk_note: "不得使用赛事 logo、球队队徽；球员同款需授权"
+  basketball:
+    name: 篮球
+    keywords: [篮球, 篮球鞋, 球衣, 护膝, NBA, CBA, 三分, 扣篮, 街球, 野球场]
+    categories: [篮球鞋, 篮球, 护膝, 球袜, 护踝]
+    default_weight_kg: 0.9
+    default_return_rate: 0.22
+    size_system: "EU 鞋码"
+    cert_required: false
+    risk_note: "不得使用球队/联盟标识；球鞋不得宣称防崴脚"
+  cycling:
+    name: 骑行
+    keywords: [骑行, 公路车, 山地车, 码表, 骑行服, 头盔, 锁鞋, 环法, 骑行裤, 打气筒]
+    categories: [骑行头盔, 骑行服, 码表, 车灯, 骑行手套, 水壶架]
+    default_weight_kg: 1.2
+    default_return_rate: 0.16
+    size_system: "头盔尺码（S/M/L，按头围）"
+    cert_required: true
+    risk_note: "头盔必须有 3C/CE 认证编号；不得宣称绝对安全"
+  snow:
+    name: 冰雪
+    keywords: [滑雪, 单板, 双板, 雪镜, 护臀, 雪场, 崇礼, 冬奥, 滑冰, 冰刀]
+    categories: [雪镜, 护臀, 手套, 雪服, 滑雪袜]
+    default_weight_kg: 1.0
+    default_return_rate: 0.2
+    size_system: "均码 / 雪镜通用"
+    cert_required: true
+    risk_note: "雪镜透光率与防护等级需标注；不得承诺防起雾效果"
+  outdoor:
+    name: 户外
+    keywords: [露营, 徒步, 登山, 越野, 冲锋衣, 帐篷, 户外, 溯溪, 爬山, 野营]
+    categories: [帐篷, 冲锋衣, 登山鞋, 登山杖, 保温壶, 头灯]
+    default_weight_kg: 2.0
+    default_return_rate: 0.18
+    size_system: "EU 鞋码 / 均码"
+    cert_required: false
+    risk_note: "不得宣称防水等级超过实测值"
+
+# 商品品类 → 运动项目（建档时自动归类；不在表里的靠 keywords 相似度兜底）
+category_map:
+  跑鞋: running
+  碳板跑鞋: running
+  运动袜: running
+  压缩裤: running
+  能量胶: running
+  盐丸: running
+  运动手表: running
+  腰包: running
+  羽毛球拍: badminton
+  羽毛球: badminton
+  手胶: badminton
+  羽毛球鞋: badminton
+  拍线: badminton
+  球包: badminton
+  瑜伽垫: fitness
+  健腹轮: fitness
+  哑铃: fitness
+  弹力带: fitness
+  蛋白粉: fitness
+  运动手套: fitness
+  护腕: fitness
+  筋膜枪: fitness
+  足球鞋: football
+  足球: football
+  护腿板: football
+  球袜: football
+  守门员手套: football
+  篮球鞋: basketball
+  篮球: basketball
+  护膝: basketball
+  护踝: basketball
+  骑行头盔: cycling
+  骑行服: cycling
+  码表: cycling
+  车灯: cycling
+  骑行手套: cycling
+  水壶架: cycling
+  雪镜: snow
+  护臀: snow
+  雪服: snow
+  滑雪袜: snow
+  帐篷: outdoor
+  冲锋衣: outdoor
+  登山鞋: outdoor
+  登山杖: outdoor
+  保温壶: outdoor
+  头灯: outdoor

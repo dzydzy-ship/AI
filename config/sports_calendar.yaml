@@ -1,0 +1,99 @@
+# 体育赛事/季节日历（"提前量"的来源）
+#
+# 为什么热点采集工具不够用：
+#   热榜只能告诉你"今天什么火"，而赛事是有日期的——等它上榜，内容已经排不上队。
+#   运营真正需要的是"赛前 4 周的备战期"，所以日历必须由商家自己维护（本地 YAML，
+#   离线可演示、不被第三方接口限流）。
+#
+# 字段说明：
+#   key          唯一标识（虚拟热点用 event://<key> 关联）
+#   name         赛事/节点名称
+#   date         主日期（YYYY-MM-DD）
+#   sport        对应 sports_taxonomy.yaml 里的运动项目（用于商品匹配）
+#   keywords     命中的关键词（给 R/T 分与内容生成用）
+#   prepare_days 备战期长度：提前这么多天就开始出机会卡
+#   peak_days    爆发期长度：赛前这么多天是内容黄金期
+#   content_plan 内容排期：offset_days 为相对主日期的偏移（负数=赛前）
+#   risk         该赛事的内容合规提醒
+
+version: 1
+
+timezone: Asia/Shanghai
+
+events:
+  - key: bm2026
+    name: 北京马拉松
+    date: 2026-11-15
+    sport: running
+    keywords: [北京马拉松, 北马, 马拉松, 破三, 配速, 碳板跑鞋, 赛前减量]
+    prepare_days: 30
+    peak_days: 7
+    risk: "不得使用赛事官方 logo、赛道照片、运动员肖像；成绩表述不得夸大"
+    content_plan:
+      - {offset_days: -28, form: 装备清单, angle: "赛前 4 周：碳板跑鞋该怎么选、要不要现在换新鞋"}
+      - {offset_days: -14, form: 训练打卡, angle: "赛前 2 周减量与补给计划，附能量胶使用节奏"}
+      - {offset_days: -7, form: 装备测评, angle: "赛前一周：比赛日装备清单（袜子/腰包/号码带）"}
+      - {offset_days: 1, form: 赛事应援, angle: "完赛恢复：拉伸与护具使用，别硬扛"}
+
+  - key: shm2026
+    name: 上海马拉松
+    date: 2026-12-06
+    sport: running
+    keywords: [上海马拉松, 上马, 马拉松, 配速, 赛前减量]
+    prepare_days: 30
+    peak_days: 7
+    risk: "同上，不得使用赛事标识；注意跨城参赛的物流时效"
+    content_plan:
+      - {offset_days: -21, form: 装备测评, angle: "秋冬赛季跑鞋选择：缓震 vs 碳板怎么搭"}
+      - {offset_days: -7, form: 训练打卡, angle: "赛前一周减量：跑量砍多少、睡多久"}
+
+  - key: badminton_league_2026
+    name: 城市羽毛球联赛
+    date: 2026-11-20
+    sport: badminton
+    keywords: [羽毛球, 联赛, 双打, 杀球, 磅数, 手胶]
+    prepare_days: 21
+    peak_days: 5
+    risk: "不得使用联赛名称做商业宣传背书；球拍性能不得承诺成绩提升"
+    content_plan:
+      - {offset_days: -14, form: 装备清单, angle: "新手第一支拍怎么选：3U 还是 4U、磅数拉多高"}
+      - {offset_days: -3, form: 训练打卡, angle: "赛前手胶更换与球线磅数检查清单"}
+
+  - key: double11_2026
+    kind: promo
+    name: 双十一大促
+    date: 2026-11-11
+    sport: all
+    keywords: [双十一, 大促, 满减, 优惠券, 快递爆仓]
+    prepare_days: 30
+    peak_days: 3
+    risk: "价格宣传不得虚构原价；快递时效承诺需留余量"
+    content_plan:
+      - {offset_days: -14, form: 装备清单, angle: "运动装备双十一清单：哪些值得囤、哪些别冲动"}
+      - {offset_days: -3, form: 装备测评, angle: "大促前最后检查：尺码表、退换政策、发货时效"}
+      - {offset_days: 2, form: 客服话术, angle: "爆仓期发货延迟怎么沟通才不掉评分"}
+
+  - key: gym_newyear_2027
+    kind: season
+    name: 新年健身计划
+    date: 2027-01-01
+    sport: fitness
+    keywords: [新年, 健身, 减脂, 增肌, 立flag, 体脂, 居家健身]
+    prepare_days: 21
+    peak_days: 7
+    risk: "减脂增肌不得承诺具体体重/围度变化；不得暗示医疗效果"
+    content_plan:
+      - {offset_days: -14, form: 装备清单, angle: "居家健身最小装备清单：一张垫子能练什么"}
+      - {offset_days: -3, form: 训练打卡, angle: "新手第一周训练计划模板（不承诺减重数字）"}
+
+  - key: ski_open_2026
+    kind: season
+    name: 冰雪季开板
+    date: 2026-12-15
+    sport: snow
+    keywords: [滑雪, 开板, 崇礼, 雪镜, 护臀, 雪季]
+    prepare_days: 25
+    peak_days: 7
+    risk: "雪镜必须标注透光率与防护等级；不得承诺防起雾绝对有效"
+    content_plan:
+      - {offset_days: -10, form: 装备清单, angle: "第一次滑雪要买什么：雪镜、护臀、手套优先级"}

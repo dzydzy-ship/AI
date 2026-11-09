@@ -1,0 +1,40 @@
+# 体育用品运费与退货口径
+#
+# 为什么体育品类必须单独一套口径：
+#   1. 体育用品是"重货"——羽毛球拍整箱 2.3kg、护具 1kg 以上，固定 15 元运费
+#      在真实快递账单里根本兜不住，通用口径会系统性高估利润；
+#   2. 体育用品是"高退货品类"——鞋类尺码不合适退货率能到 25%，
+#      退货产生的双向运费 + 折损必须计入期望损失，否则测出来的利润是虚的。
+#
+# 计费规则（国内主流快递的简化版，可按实际快递合同改）：
+#   计费重量 = max(实重, 体积重)，体积重 = 长×宽×高(cm) / volume_divisor
+#   运费 = first_kg_fee + ceil((计费重量 - first_weight_kg) / add_step_kg) * add_fee
+
+version: 1
+
+policies:
+  fixed:
+    name: 固定运费（通用口径）
+    mode: fixed
+    fee: 19.9
+    note: 旧版口径，保留是为了做"两种算法差多少"的对照
+  by_weight:
+    name: 按重量计费（体育口径）
+    mode: by_weight
+    first_kg_fee: 12.0      # 首重 1kg 内 12 元
+    first_weight_kg: 1.0    # 首重重量阈值（kg）
+    add_step_kg: 0.5        # 续重按 0.5kg 一档
+    add_fee: 8.0            # 每档 8 元
+    vol_divisor: 6000       # 体积重除数（长宽高/6000）
+    remote_surcharge: 0.0   # 偏远地区加价（按商家实际合同填，默认 0）
+    note: 重货（球拍/护具/鞋）用这套，能反映真实快递成本
+
+default_policy: by_weight
+compare_policy: fixed       # 账单里并排展示的对照口径
+
+# 退货期望损失 = 退货率 × (发货+退回运费) + 退货率 × 折损率 × 成本
+return:
+  default_rate: 0.15        # 未在商品档案里填退货率时的默认值
+  shrink_rate: 0.30         # 退回商品的折损/二次销售损失比例
+  return_ship_fee: 19.9     # 退回运费（买家承担时填 0）
+  note: 鞋类建议 0.25、护具 0.20；只在账单里单列一行，不改变原有"利润"定义
